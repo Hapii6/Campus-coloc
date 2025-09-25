@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Campus Coloc - Recherche de Colocation</title>
+
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#4CAF50">
+  <link rel="icon" href="/icons/icon-192.png" sizes="192x192">
+
+  <!-- iOS PWA -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0;
+           display: flex; justify-content: center; align-items: center; height: 100vh; color: #333; }
+    .container { background-color: white; padding: 20px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+                 width: 90%; max-width: 420px; text-align: center; }
+    .logo { font-size: 26px; font-weight: 800; color: #2f855a; margin-bottom: 18px; letter-spacing: .2px; }
+    .form-group { margin-bottom: 14px; text-align: left; }
+    label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 14px; }
+    input[type="number"], input[type="text"], select {
+      width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; box-sizing: border-box; font-size: 14px;
+    }
+    button {
+      background-color: #2f855a; color: white; padding: 12px; border: none; border-radius: 8px; cursor: pointer;
+      font-size: 16px; transition: transform .05s ease, background-color .2s ease; width: 100%; font-weight: 700;
+    }
+    button:hover { background-color: #276749; }
+    button:active { transform: translateY(1px); }
+    .muted { color: #6b7280; font-size: 12px; margin-top: 10px; }
+    .hidden { display: none; }
+    #results { font-size: 22px; color: #e11d48; margin-bottom: 20px; }
+    #new-search-btn { background-color: #2563eb; }
+    #new-search-btn:hover { background-color: #1d4ed8; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="search-screen">
+      <div class="logo">Campus Coloc</div>
+      <form id="search-form">
+        <div class="form-group">
+          <label for="budget">Budget (en €)</label>
+          <input type="number" id="budget" placeholder="Ex: 500">
+        </div>
+        <div class="form-group">
+          <label for="room-size">Surface chambre (m²)</label>
+          <input type="number" id="room-size" placeholder="Ex: 12">
+        </div>
+        <div class="form-group">
+          <label for="city">Ville</label>
+          <input type="text" id="city" placeholder="Ex: Paris">
+        </div>
+        <div class="form-group">
+          <label for="smoker">Fumeur / Non-fumeur</label>
+          <select id="smoker">
+            <option value="">Sélectionnez</option>
+            <option value="non-smoker">Non-fumeur</option>
+            <option value="smoker">Fumeur</option>
+            <option value="indifferent">Indifférent</option>
+          </select>
+        </div>
+        <button type="submit">Rechercher une colocation</button>
+        <p class="muted">Installe cette page comme application via le menu de ton navigateur.</p>
+      </form>
+    </div>
+    <div id="results-screen" class="hidden">
+      <div class="logo">Campus Coloc</div>
+      <div id="results">0 résultat</div>
+      <button id="new-search-btn">Lancer une nouvelle recherche</button>
+    </div>
+  </div>
+
+  <script>
+    // Service worker registration
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js');
+      });
+    }
+
+    // Simple search simulation
+    const searchForm = document.getElementById('search-form');
+    const searchScreen = document.getElementById('search-screen');
+    const resultsScreen = document.getElementById('results-screen');
+    const newSearchBtn = document.getElementById('new-search-btn');
+
+    searchForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      searchScreen.classList.add('hidden');
+      resultsScreen.classList.remove('hidden');
+    });
+
+    newSearchBtn?.addEventListener('click', function() {
+      searchForm.reset();
+      resultsScreen.classList.add('hidden');
+      searchScreen.classList.remove('hidden');
+    });
+  </script>
+</body>
+</html>
